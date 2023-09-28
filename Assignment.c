@@ -6,6 +6,7 @@
 #define WHITE 7
 #define RED 12
 #define GREEN 10
+#define YELLOW 14
 
 //Ham to mau
 void textColor(int color) {
@@ -23,11 +24,71 @@ void thoatChuongTrinh(){
 	} while(chon!=27);
 }	
 
+void soNguyenTo(int x) {
+	int dem=0;
+	if(x <= 1 ) {
+		printf("%d khong phai la so nguyen to\n", x);
+	} else  {
+		for(int i=2; i<x; i++) {
+			if(x%i==0) {
+				dem++;
+				break;
+			}
+		}
+		
+		if(dem==0 || x==2) {
+			printf("%d la so nguyen to\n",x);
+		} else {
+			printf("%d khong phai la so nguyen to\n", x);
+		}
+	}
+}
+
+void soChinhPhuong(int x) {
+	int soChinhPhuong=0;
+	for(int i=0; i<=(x/2+1); i++) {
+		if(i*i == x) {
+			soChinhPhuong = 1;
+			break;
+		}
+	}
+	
+	if(soChinhPhuong) {
+		printf("%d la so chinh phuong", x);
+	} else {
+		printf("%d khong phai la so chinh phuong", x);
+	}
+}
+
 void bai1() {
+	char kiTu;
+	int kiemTraKiTu;
+	float x;
+	
+	
 	system("cls");
-	textColor(RED);
+	textColor(WHITE);
 	printf("Bai 1: Kiem tra so nguyen\n\n");
 	
+	do {
+		printf("Nhap so x: ");
+		kiemTraKiTu = scanf("%f%c", &x, &kiTu);
+		fflush(stdin);
+	} while( kiemTraKiTu !=2 || kiTu !='\n');
+	
+	printf("\n");
+	textColor(YELLOW);
+	if(x==(int)x) {
+		printf("%0.f la so nguyen\n", x);
+		soNguyenTo((int)x);
+		soChinhPhuong((int)x);
+	} else {
+		printf("%.2f khong phai la so nguyen\n",x);
+		printf("%.2f khong phai la so nguyen to\n",x);
+		printf("%.2f khong phai la so chinh phuong\n",x);
+	}
+	
+	printf("\n\n");
 	thoatChuongTrinh();
 }
 
