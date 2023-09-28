@@ -93,11 +93,47 @@ void bai1() {
 }
 
 void bai2() {
+	int a,b, temp, kiemTraKiTu, UCLN=1, BCNN=1;
+	char kiTu;
 	system("cls");
 	textColor(RED);
 	printf("Bai 2: Tim uoc chung va boi chung nho nhat\n\n");
 	
-	thoatChuongTrinh();	
+	textColor(WHITE);
+	do {
+		printf("Nhap so a: ");
+		kiemTraKiTu = scanf("%d%c", &a, &kiTu);
+		fflush(stdin);
+	} while(kiemTraKiTu !=2 || kiTu !='\n');
+		
+	do {
+		printf("Nhap so b: ");
+		kiemTraKiTu = scanf("%d%c", &b, &kiTu);
+		fflush(stdin);
+	} while(kiemTraKiTu !=2 || kiTu !='\n');
+	
+	if(a>b) {
+		temp = a;
+		a = b;
+		b = temp;
+	}
+	
+	for(int i=a; i>=1; i--) {
+		if(a%i==0 && b%i==0) {
+			UCLN = i;
+
+			break;
+		}
+	}
+	
+	BCNN = (a*b)/UCLN;
+	
+	printf("\nHai so %d va %d\n\n", a, b);
+	
+	printf("Uoc chung lon nhat la: %d\n", UCLN);
+	printf("Boi chung nho nhat la: %d\n\n", BCNN);
+	
+	thoatChuongTrinh();
 }
 
 void bai3() {
