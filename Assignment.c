@@ -137,10 +137,52 @@ void bai2() {
 }
 
 void bai3() {
+	
+	int gioBatDau, gioKetThuc, kiemTraKiTu, tienBaGioDau = 150000, tienGioThuTu = 105000;
+	int tongGio = 0, tongTien=0, baGioDau = 3;
+	char kiTu;
 	system("cls");
 	textColor(RED);
 	printf("Bai 3: Tinh tien cho quan Karaoke\n\n");
 	
+	textColor(YELLOW);
+	printf("Quan hoat dong trong khoang tu 12h -> 23h\n\n");
+	
+	textColor(WHITE);
+	
+	do {
+		
+		do {
+			printf("Nhap gio bat dau: ");
+			kiemTraKiTu = scanf("%d%c", &gioBatDau, &kiTu);
+			fflush(stdin);
+		} while(kiemTraKiTu !=2 || kiTu !='\n' || gioBatDau > 23 || gioBatDau < 12);
+		
+		do {
+			printf("Nhap gio ket thuc: ");
+			kiemTraKiTu = scanf("%d%c", &gioKetThuc, &kiTu);
+			fflush(stdin);
+		} while(kiemTraKiTu !=2 || kiTu !='\n' || gioKetThuc > 23 || gioKetThuc < 12);
+		
+	} while(gioBatDau >= gioKetThuc);
+	
+	textColor(YELLOW);
+	printf("\nGio bat dau: %d\n", gioBatDau);
+	printf("Gio ket thuc: %d\n", gioKetThuc);
+	
+	tongGio = gioKetThuc - gioBatDau;
+	if(tongGio <= baGioDau) {
+		tongTien = tongGio * tienBaGioDau;
+	} else {
+		tongTien = baGioDau * tienBaGioDau + (tongGio-baGioDau) * tienGioThuTu;
+	}
+	
+	if(gioBatDau >=14 && gioBatDau <= 17) {
+		tongTien = tongTien*0.9;
+	}
+	
+	printf("Tong tien thanh toan: %d VND\n\n", tongTien);
+
 	thoatChuongTrinh();
 }
 
