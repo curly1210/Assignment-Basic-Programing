@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <conio.h>
 #include <windows.h>
+#include <string.h>
+#include <stdlib.h>
 
 //Dat ten cho ma mau
 #define WHITE 7
@@ -58,6 +60,39 @@ void soChinhPhuong(int x) {
 	} else {
 		printf("%d khong phai la so chinh phuong", x);
 	}
+}
+
+void themDauPhay(int n) {
+
+    if (n < 1000) {
+        printf ("%d", n);
+        return;
+    }
+    themDauPhay(n/1000);
+    printf (",%03d", n%1000);
+}
+
+void inSo(float so) {
+	int viTriCatSauDauPhay;
+	char soGoc[20], truocDauPhay[20], sauDauPhay[4];
+	
+	sprintf(soGoc, "%.02f", so); // chuyen int sang char
+	
+	//sao chep chuoi goc 
+	for(int i=0; i<strlen(soGoc); i++) {
+		truocDauPhay[i] = soGoc[i];
+	}
+
+	//tach chuoi sau dau phay
+	viTriCatSauDauPhay = strlen(soGoc) - 3;
+	strncpy(sauDauPhay, soGoc + viTriCatSauDauPhay, 3);
+//	printf("%s\n", sauDauPhay);
+	//tach chuoi truoc dau phay
+	strtok(truocDauPhay,".");
+	
+	themDauPhay(atoi(truocDauPhay)); //goi ham them dau phay cho so int, so truoc dau phay
+
+	printf("%s VND\n\n", sauDauPhay); //them so sau dau phay
 }
 
 void bai1() {
@@ -138,8 +173,8 @@ void bai2() {
 
 void bai3() {
 	
-	int gioBatDau, gioKetThuc, kiemTraKiTu, tienBaGioDau = 150000, tienGioThuTu = 105000;
-	int tongGio = 0, tongTien=0, baGioDau = 3;
+	float gioBatDau, gioKetThuc, kiemTraKiTu, tienBaGioDau = 150000, tienGioThuTu = 105000;
+	float tongGio = 0, tongTien=0, baGioDau = 3;
 	char kiTu;
 	system("cls");
 	textColor(RED);
@@ -154,21 +189,21 @@ void bai3() {
 		
 		do {
 			printf("Nhap gio bat dau: ");
-			kiemTraKiTu = scanf("%d%c", &gioBatDau, &kiTu);
+			kiemTraKiTu = scanf("%f%c", &gioBatDau, &kiTu);
 			fflush(stdin);
-		} while(kiemTraKiTu !=2 || kiTu !='\n' || gioBatDau > 23 || gioBatDau < 12);
+		} while(kiemTraKiTu !=2 || kiTu !='\n' || gioBatDau > 22 || gioBatDau < 12);
 		
 		do {
 			printf("Nhap gio ket thuc: ");
-			kiemTraKiTu = scanf("%d%c", &gioKetThuc, &kiTu);
+			kiemTraKiTu = scanf("%f%c", &gioKetThuc, &kiTu);
 			fflush(stdin);
 		} while(kiemTraKiTu !=2 || kiTu !='\n' || gioKetThuc > 23 || gioKetThuc < 12);
 		
 	} while(gioBatDau >= gioKetThuc);
 	
 	textColor(YELLOW);
-	printf("\nGio bat dau: %d\n", gioBatDau);
-	printf("Gio ket thuc: %d\n", gioKetThuc);
+	printf("\nGio bat dau: %.02f\n", gioBatDau);
+	printf("Gio ket thuc: %.02f\n", gioKetThuc);
 	
 	tongGio = gioKetThuc - gioBatDau;
 	if(tongGio <= baGioDau) {
@@ -181,15 +216,57 @@ void bai3() {
 		tongTien = tongTien*0.9;
 	}
 	
-	printf("Tong tien thanh toan: %d VND\n\n", tongTien);
+	printf("Tong tien thanh toan: ");
+//	printf("Tong tien thanh toan: %.2f", tongTien);
+
+	inSo(tongTien);
 
 	thoatChuongTrinh();
 }
 
 void bai4() {
+	char kiTu;
+	int kiemTraKiTu,tienMotSo,bac;
+	float soDien, tienDien;
+	
 	system("cls");
+	
 	textColor(RED);
 	printf("Bai 4: Tinh tien dien\n\n");
+	textColor(WHITE);
+	
+	do {
+		printf("Nhap vao so dien: ");
+		kiemTraKiTu = scanf("%f%c", &soDien, &kiTu);
+		fflush(stdin);
+	}while( kiemTraKiTu !=2 || kiTu !='\n' || soDien < 0);
+	
+	if(soDien >= 0 && soDien <= 50) {
+		bac = 1;
+		tienMotSo = 1678;
+	}else if(soDien > 50 && soDien <= 100) {
+		bac = 2;
+		tienMotSo = 1734;
+	}else if(soDien > 100 && soDien <= 200) {
+		bac = 3;
+		tienMotSo = 2014;
+	}else if(soDien > 200 && soDien <= 300) {
+		bac = 4;
+		tienMotSo = 2536;
+	}else if(soDien > 300 && soDien <= 400) {
+		bac = 5;
+		tienMotSo = 2834;
+	}else {
+		bac = 6;
+		tienMotSo = 2927;
+	}
+	
+	tienDien = soDien * tienMotSo;
+	
+	textColor(YELLOW);
+	printf("\nBan dang dung dien o bac: %d\n",bac);
+	printf("Tien dien can phai dong la: ", tienDien);
+	inSo(tienDien);
 	
 	thoatChuongTrinh();
 }
