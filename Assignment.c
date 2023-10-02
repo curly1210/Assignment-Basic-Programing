@@ -276,6 +276,53 @@ void bai5() {
 	textColor(RED);
 	printf("Bai 5: Chuc nang doi tien\n\n");
 	
+	int tongTien, kiemTraKiTu;
+	int soDu;
+	char kiTu;
+	
+	textColor(WHITE);
+	do {
+		printf("Nhap so tien can doi: ");
+		kiemTraKiTu = scanf("%d%c", &tongTien, &kiTu);
+		fflush(stdin);
+	} while(kiemTraKiTu !=2 || kiTu !='\n' || tongTien <= 0);
+	
+	soDu = tongTien;
+	printf("\n");
+	textColor(YELLOW);
+	while(soDu!=0) {
+		if(soDu >= 500 && tongTien != 500) {
+			printf("%d to 500\n", soDu/500);
+			soDu = soDu%500;
+		} else if(soDu >= 200 && tongTien != 200) {
+			printf("%d to 200\n", soDu/200);
+			soDu = soDu%200;
+		} else if(soDu >= 100 && tongTien != 100) {
+			printf("%d to 100\n", soDu/100);
+			soDu = soDu%100;
+		} else if(soDu >= 50 && tongTien != 50) {
+			printf("%d to 50\n", soDu/50);
+			soDu = soDu%50;
+		} else if(soDu >= 20 && tongTien != 20) {
+			printf("%d to 20\n", soDu/20);
+			soDu = soDu%20;
+		} else if(soDu >= 10 && tongTien != 10) {
+			printf("%d to 10\n", soDu/10);
+			soDu = soDu%10;;
+		} else if(soDu >= 5 && tongTien != 5) {
+			printf("%d to 5\n", soDu/5);
+			soDu = soDu%5;
+		} else if(soDu >= 2 && tongTien != 2) {
+			printf("%d to 2\n", soDu/2);
+			soDu = soDu%2;
+		} else {
+			printf("%d to 1\n", soDu/1);
+			soDu = soDu%1;
+		}
+	}
+	
+	printf("\n");
+	
 	thoatChuongTrinh();	
 }
 
