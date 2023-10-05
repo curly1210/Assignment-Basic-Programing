@@ -3,6 +3,7 @@
 #include <windows.h>
 #include <string.h>
 #include <stdlib.h>
+#include <locale.h>
 
 //Dat ten cho ma mau
 #define WHITE 7
@@ -75,8 +76,9 @@ void themDauPhay(int n) {
 void inSo(float so) {
 	int viTriCatSauDauPhay;
 	char soGoc[20], truocDauPhay[20], sauDauPhay[4];
-	
+
 	sprintf(soGoc, "%.02f", so); // chuyen int sang char
+	printf("\nchieu dai: %d\n", strlen(soGoc));
 	
 	//sao chep chuoi goc 
 	for(int i=0; i<strlen(soGoc); i++) {
@@ -86,7 +88,7 @@ void inSo(float so) {
 	//tach chuoi sau dau phay
 	viTriCatSauDauPhay = strlen(soGoc) - 3;
 	strncpy(sauDauPhay, soGoc + viTriCatSauDauPhay, 3);
-//	printf("%s\n", sauDauPhay);
+
 	//tach chuoi truoc dau phay
 	strtok(truocDauPhay,".");
 	
@@ -330,7 +332,59 @@ void bai6() {
 	system("cls");
 	textColor(RED);
 	printf("Bai 6: Tinh lai suat vay ngan hang, vay tra gop\n\n");
+	textColor(WHITE);
 	
+	char kiTu;
+	float tienVay, tienConLai, tienLaiHangThang = 0, tongTienLai=0, gocPhaiTra=0, gocVaLai=0;
+	int kiemTraKiTu, kyHan = 12, laiXuatMotThang = 5; 
+	
+	do {
+		printf("Nhap vao so tien muon vay: ");
+		kiemTraKiTu = scanf("%f%c", &tienVay, &kiTu);
+		fflush(stdin);
+	}while( kiemTraKiTu !=2 || kiTu !='\n' || tienVay <= 0);
+	
+	textColor(YELLOW);
+	printf("\nSo tien muon vay: %.02f\n", tienVay);
+	printf("Lai thang: %d%\n", laiXuatMotThang);
+	printf("Ky han: %d\n", kyHan);
+	
+	gocPhaiTra = tienVay/kyHan;
+	tienConLai = tienVay;
+	
+	printf("\n");
+	textColor(WHITE);
+	for(int i=0; i<90; i++) {
+		printf("-");
+	}	
+	printf("\n");
+	printf("%-10s %-20s %-20s %-20s %-20s",
+		"Ky han",
+		"Lai phai tra",
+		"Goc phai tra",
+		"So tien phai tra", 
+		"So tien con lai");
+		
+	printf("\n");
+	for(int i=1; i<= kyHan; i++) {
+		tienLaiHangThang = tienConLai*0.05;
+		tongTienLai += tienLaiHangThang;
+		gocVaLai = gocPhaiTra + tienLaiHangThang;
+		tienConLai -= gocPhaiTra;
+		printf("%-10d %-20.02f %-20.02f %-20.02f %-20.02f",
+		i, tienLaiHangThang, gocPhaiTra, gocVaLai, tienConLai);
+		printf("\n");
+	}
+	
+	for(int i=0; i<90; i++) {
+		printf("-");
+	}
+	
+	textColor(YELLOW);
+	printf("\n\nTong tien lai phai tra: %.02f", tongTienLai);
+	printf("\nTong tien goc va lai phai tra: %.02f", tongTienLai + tienVay);
+
+	printf("\n\n");
 	thoatChuongTrinh();	
 }
 
@@ -416,9 +470,6 @@ int menu(char luaChon[][50], int soDong, int chonMenu) {
 	
 }
 
-//Bien toan cuc, chuc nang dang chon
-int chonMenu = 1;
-
 int main() {
 	char luaChon[][50] = {"**********Assignment**********\n","1. Kiem tra so nguyen","2. Tim uoc chung va boi chung nho nhat",
 	"3. Tinh tien cho quan Karaoke","4. Tinh tien dien","5. Chuc nang doi tien",
@@ -427,6 +478,7 @@ int main() {
 	
 	int soDong = sizeof(luaChon)/sizeof(luaChon[0]); // Tinh so dong cua Menu
 
+	int chonMenu = 1;
 	do {
 		chonMenu = menu(luaChon,soDong,chonMenu); // Chon chuc nang
 		
