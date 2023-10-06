@@ -461,11 +461,117 @@ void bai7() {
 	thoatChuongTrinh();	
 }
 
-void bai8() {
+struct sinhVien {
+	char hoTen[30];
+	float diem;
+	char hocLuc[15];
+};
+
+int dsSinhVien(struct sinhVien dssv[], int *soLuong) {
+	strcpy(dssv[0].hoTen, "Pham Xuan Cuong");
+	dssv[0].diem = 9;
+	strcpy(dssv[0].hocLuc,"Xuat Sac");
+	
+	strcpy(dssv[1].hoTen, "Ha Kim Oanh");
+	dssv[1].diem = 10;
+	strcpy(dssv[1].hocLuc,"Xuat sac");
+	
+	*soLuong = 2;
+	
+}
+
+int themSinhVien(struct sinhVien dssv[], int *soLuongCu) {
+	
+	int kiemTraKiTu, soLuongMuonThem;
+//	int soLuongCu;
+	char kiTu;
+	
+//	soLuongCu = *soLuong;
+	do {
+		printf("Nhap so luong sinh vien muon them: ");
+		kiemTraKiTu = scanf("%d%c", &soLuongMuonThem, &kiTu);
+		fflush(stdin);
+	} while( kiemTraKiTu !=2 || kiTu !='\n' || soLuongMuonThem<0);
+	
+	printf("\n");
+	if(soLuongMuonThem==0) return *soLuongCu;
+	
+	int dem=1;
+	float diem;
+
+	for(int i = *soLuongCu; i < *soLuongCu + soLuongMuonThem; i++ ) {
+		printf("Nhap ho ten sinh vien thu %d: ", dem);
+		fflush(stdin);
+		gets(dssv[i].hoTen);
+//		fflush(stdin);
+		do {
+			printf("Nhap diem sinh vien thu %d: ",dem);
+			kiemTraKiTu = scanf("%f%c", &dssv[i].diem, &kiTu);
+			fflush(stdin);
+		} while( kiemTraKiTu !=2 || kiTu !='\n' || dssv[i].diem<0 || dssv[i].diem >10);
+		
+		diem = dssv[i].diem;
+		if(diem >= 9) {
+			strcpy(dssv[i].hocLuc, "Xuat sac");
+		} else if(diem >= 8) {
+			strcpy(dssv[i].hocLuc, "Gioi");
+		} else if(diem >= 6.5) {
+			strcpy(dssv[i].hocLuc, "Kha");
+		} else if(diem >= 5) {
+			strcpy(dssv[i].hocLuc, "Trung binh");
+		} else {
+			strcpy(dssv[i].hocLuc, "Yeu");
+		}
+		dem++;
+		printf("\n");
+	}	
+	
+	return *soLuongCu + soLuongMuonThem;
+}
+
+void sapXepDiemGiamDan(struct sinhVien dssv[], int soLuong) {
+	struct sinhVien sv;
+	for(int i=0; i<soLuong; i++) {	
+		for(int j=0; j<soLuong-i-1; j++) {
+			if(dssv[j].diem < dssv[j+1].diem) {
+				sv = dssv[j];
+				dssv[j] = dssv[j+1];
+				dssv[j+1] = sv;
+			}
+		}
+	}
+}
+
+void inDSSV(struct sinhVien dssv[], int soLuong) {
+	textColor(YELLOW);
+	if(soLuong ==0) {
+		printf("Danh sach rong\n");
+	} else {
+		sapXepDiemGiamDan(dssv,soLuong);
+		printf("%-25s %-20s %-20s\n","Ho va ten","Diem","Hoc luc");
+		textColor(WHITE);
+		for(int i=0; i<soLuong; i++) {	
+			printf("%-25s %-20.02f %-20s", dssv[i].hoTen, dssv[i].diem, dssv[i].hocLuc);
+			printf("\n");
+		}
+	}
+}
+
+void bai8(struct sinhVien dssv[], int *soLuongSinhVien) {
 	system("cls");
 	textColor(RED);
 	printf("Bai 8: Sap xep thong tin sinh vien\n\n");
+	textColor(WHITE);	
 	
+	int soLuongMoi;
+	soLuongMoi = themSinhVien(dssv,soLuongSinhVien);
+	*soLuongSinhVien = soLuongMoi; 
+
+//	printf("\n");
+	inDSSV(dssv, *soLuongSinhVien);
+
+	
+	printf("\n");
 	thoatChuongTrinh();	
 }
 
@@ -541,6 +647,10 @@ int main() {
 	"6. Tinh lai suat vay ngan hang, vay tra gop","7. Vay tien mua xe","8. Sap xep thong tin sinh vien",
 	"9. Game FPOLY-LOTT","10. Tinh toan phan so","11. Thoat"};
 	
+	struct sinhVien danhSachSinhVien[100];
+	int soLuongSinhVien=0;
+	dsSinhVien(danhSachSinhVien,&soLuongSinhVien);
+	
 	int soDong = sizeof(luaChon)/sizeof(luaChon[0]); // Tinh so dong cua Menu
 
 	int chonMenu = 1;
@@ -578,7 +688,9 @@ int main() {
 				break;
 			}
 			case 8: {
-				bai8();
+				bai8(danhSachSinhVien, &soLuongSinhVien);
+				printf("\nsoLuongSinhVien: %d", soLuongSinhVien);
+//				getch();
 				break;
 			}
 			case 9: {
