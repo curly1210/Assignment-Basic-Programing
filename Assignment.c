@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <locale.h>
+#include <math.h>
 
 //Dat ten cho ma mau
 #define WHITE 7
@@ -328,6 +329,9 @@ void bai5() {
 	thoatChuongTrinh();	
 }
 
+const int kyHanThang = 12;
+const int laiMotThang = 5;
+
 void bai6() {
 	system("cls");
 	textColor(RED);
@@ -335,21 +339,21 @@ void bai6() {
 	textColor(WHITE);
 	
 	char kiTu;
-	float tienVay, tienConLai, tienLaiHangThang = 0, tongTienLai=0, gocPhaiTra=0, gocVaLai=0;
-	int kiemTraKiTu, kyHan = 12, laiXuatMotThang = 5; 
+	double tienVay, tienConLai, tienLaiHangThang = 0, tongTienLai=0, gocPhaiTra=0, gocVaLai=0;
+	int kiemTraKiTu; 
 	
 	do {
 		printf("Nhap vao so tien muon vay: ");
-		kiemTraKiTu = scanf("%f%c", &tienVay, &kiTu);
+		kiemTraKiTu = scanf("%lf%c", &tienVay, &kiTu);
 		fflush(stdin);
 	}while( kiemTraKiTu !=2 || kiTu !='\n' || tienVay <= 0);
 	
 	textColor(YELLOW);
-	printf("\nSo tien muon vay: %.02f\n", tienVay);
-	printf("Lai thang: %d%\n", laiXuatMotThang);
-	printf("Ky han: %d\n", kyHan);
+	printf("\nSo tien muon vay: %.02lf VND", tienVay);
+	printf("\nLai thang: %d %%/thang\n", laiMotThang);
+	printf("Ky han: %d thang\n", kyHanThang);
 	
-	gocPhaiTra = tienVay/kyHan;
+	gocPhaiTra = tienVay/kyHanThang;
 	tienConLai = tienVay;
 	
 	printf("\n");
@@ -366,13 +370,13 @@ void bai6() {
 		"So tien con lai");
 		
 	printf("\n");
-	for(int i=1; i<= kyHan; i++) {
-		tienLaiHangThang = tienConLai*0.05;
+	for(int i=1; i<= kyHanThang; i++) {
+		tienLaiHangThang = tienConLai*laiMotThang*0.01;
 		tongTienLai += tienLaiHangThang;
 		gocVaLai = gocPhaiTra + tienLaiHangThang;
 		tienConLai -= gocPhaiTra;
-		printf("%-10d %-20.02f %-20.02f %-20.02f %-20.02f",
-		i, tienLaiHangThang, gocPhaiTra, gocVaLai, tienConLai);
+		printf("%-10d %-20.02lf %-20.02lf %-20.02lf %-20.02lf",
+		i, tienLaiHangThang, gocPhaiTra, gocVaLai, fabs(tienConLai));
 		printf("\n");
 	}
 	
@@ -381,18 +385,79 @@ void bai6() {
 	}
 	
 	textColor(YELLOW);
-	printf("\n\nTong tien lai phai tra: %.02f", tongTienLai);
-	printf("\nTong tien goc va lai phai tra: %.02f", tongTienLai + tienVay);
+	printf("\n\nTong tien lai phai tra: %.02lf VND", tongTienLai);
+	printf("\nTong tien goc va lai phai tra: %.02lf VND", tongTienLai + tienVay);
 
 	printf("\n\n");
 	thoatChuongTrinh();	
 }
 
+const double tienVayMuaOto = 500000000;
+const int thoiHanVay = 24;
+const double laiSuatNam = 7.2;
+
 void bai7() {
 	system("cls");
 	textColor(RED);
 	printf("Bai 7: Vay tien mua xe\n\n");
+	textColor(WHITE);
 	
+	float phanTramVay;
+	int kiemTraKiTu;
+	char kiTu;
+	
+	do {
+		printf("Nhap vao phan tram vay: ");
+		kiemTraKiTu = scanf("%f%c", &phanTramVay, &kiTu);
+		fflush(stdin);
+	}while( kiemTraKiTu !=2 || kiTu !='\n' || phanTramVay <= 0 || phanTramVay > 100);
+	
+	double tienTraLanDau = tienVayMuaOto*(100-phanTramVay)*0.01;
+	double tienTraGop=0, tienLaiHangThang= 0, tienLaiTong=0, gocVaLai = 0, gocPhaiTra=0;
+	tienTraGop = tienVayMuaOto*phanTramVay*0.01;
+	gocPhaiTra =  tienTraGop/thoiHanVay;
+	
+	textColor(YELLOW);
+	printf("\nTong tien vay: %.02lf VND", tienVayMuaOto);
+	printf("\nPhan tram vay: %.02lf %%", phanTramVay);
+	printf("\nTien phai tra lan dau: %.02lf VND", tienTraLanDau);
+	printf("\nTien tra gop: %.2lf VND", tienTraGop);
+	printf("\nLai suat: %.2f %%/nam", laiSuatNam);
+	printf("\nKi han: %d nam", thoiHanVay);
+	
+	textColor(WHITE);
+	printf("\n\n");
+	for(int i=0; i<90; i++) {
+		printf("-");
+	}
+	printf("\n");
+	printf("%-10s %-20s %-20s %-20s %-20s",
+		"Ky han",
+		"Lai phai tra",
+		"Goc phai tra",
+		"So tien phai tra", 
+		"So tien con lai");
+	
+	printf("\n");
+	for(int i=1; i<= thoiHanVay; i++) {
+		tienLaiHangThang = tienTraGop*laiSuatNam*0.01;
+		tienLaiTong += tienLaiHangThang;
+		gocVaLai = gocPhaiTra + tienLaiHangThang;
+		tienTraGop -= gocPhaiTra;
+		printf("%-10d %-20.02lf %-20.02lf %-20.02lf %-20.02lf",
+		i, tienLaiHangThang, gocPhaiTra, gocVaLai, fabs(tienTraGop));
+		printf("\n");
+	}
+	
+	for(int i=0; i<90; i++) {
+		printf("-");
+	}
+	
+	textColor(YELLOW);
+	printf("\n\nTong tien lai phai tra la: %.02lf VND", tienLaiTong);
+	printf("\nTong tien goc va lai phai tra la: %.02lf VND", tienLaiTong + tienVayMuaOto*phanTramVay*0.01 );
+		
+	printf("\n\n");
 	thoatChuongTrinh();	
 }
 
