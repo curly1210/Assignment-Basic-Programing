@@ -131,6 +131,28 @@ void bai1() {
 	thoatChuongTrinh();
 }
 
+int uocChungLonNhat(int a, int b) {
+	int temp, UCLN;
+	if(a>b) {
+		temp = a;
+		a = b;
+		b = temp;
+	}
+	
+	for(int i=a; i>=1; i--) {
+		if(a%i==0 && b%i==0) {
+			UCLN = i;
+			break;
+		}
+	}
+	
+	return UCLN;
+}
+
+int boiChungNhoNhat(int a, int b, int UCLN) {
+	return (a*b)/UCLN;
+}
+
 void bai2() {
 	int a,b, temp, kiemTraKiTu, UCLN=1, BCNN=1;
 	char kiTu;
@@ -143,29 +165,18 @@ void bai2() {
 		printf("Nhap so a: ");
 		kiemTraKiTu = scanf("%d%c", &a, &kiTu);
 		fflush(stdin);
-	} while(kiemTraKiTu !=2 || kiTu !='\n');
+	} while(kiemTraKiTu !=2 || kiTu !='\n' || a<=0);
 		
 	do {
 		printf("Nhap so b: ");
 		kiemTraKiTu = scanf("%d%c", &b, &kiTu);
 		fflush(stdin);
-	} while(kiemTraKiTu !=2 || kiTu !='\n');
+	} while(kiemTraKiTu !=2 || kiTu !='\n' || a<=0);
 	
-	if(a>b) {
-		temp = a;
-		a = b;
-		b = temp;
-	}
 	
-	for(int i=a; i>=1; i--) {
-		if(a%i==0 && b%i==0) {
-			UCLN = i;
-
-			break;
-		}
-	}
+	UCLN = uocChungLonNhat(a,b);
 	
-	BCNN = (a*b)/UCLN;
+	BCNN = boiChungNhoNhat(a,b,UCLN);
 	
 	printf("\nHai so %d va %d\n\n", a, b);
 	
@@ -607,7 +618,7 @@ void bai9() {
 	printf("\nHai so ban chon la: %d va %d", so1,so2);
 	
 	int soNgauNhien1, soNgauNhien2;
-	srand(time(0));
+	srand(time(0)); //tao so hat giong moi sau moi lan chay (truyen vao so giay)
 //	soNgauNhien1 = 9;
 //	soNgauNhien2 = 2;
 	soNgauNhien1 = taoSoNgauNhien(1,15);
@@ -627,12 +638,196 @@ void bai9() {
 	thoatChuongTrinh();	
 }
 
+struct phanSo {
+	int tuSo;
+	int mauSo;
+};
+
+struct phanSo quyUocPhanSo(struct phanSo ps) { //tu so va mau so deu am chuyen thanh so duong
+	if(ps.tuSo<0 && ps.mauSo<0) {
+		ps.tuSo = abs(ps.tuSo);
+		ps.mauSo = abs(ps.mauSo);
+	} else if(ps.mauSo < 0 && ps.tuSo>0) {
+		ps.tuSo = -ps.tuSo;
+		ps.mauSo = abs(ps.mauSo);
+	}	
+	return ps;
+}
+
+struct phanSo nhapPhanSo() {
+	int kiemTraKiTu, tuSo, mauSo;
+	char kiTu;
+	struct phanSo ps;
+	
+	do {
+		printf("Nhap tu so: ");
+		kiemTraKiTu = scanf("%d%c", &tuSo, &kiTu);
+		fflush(stdin);
+	} while( kiemTraKiTu !=2 || kiTu !='\n');
+	
+	do {
+		printf("Nhap mau so: ");
+		kiemTraKiTu = scanf("%d%c", &mauSo, &kiTu);
+		fflush(stdin);
+	} while( kiemTraKiTu !=2 || kiTu !='\n' || mauSo==0);
+	
+	ps.tuSo = tuSo;
+	ps.mauSo = mauSo;
+	
+	ps = quyUocPhanSo(ps);
+	
+	return ps;
+}
+
+
+
+struct phanSo rutGonPhanSo(struct phanSo ps) {
+	int UCLN;
+	UCLN = uocChungLonNhat( abs(ps.tuSo), abs(ps.mauSo));
+	
+	ps.tuSo /= UCLN;
+	ps.mauSo /= UCLN;
+	
+	return ps;
+}
+
+void phepNhanPhanSo(struct phanSo ps1, struct phanSo ps2) {
+	struct phanSo tich;
+	tich.tuSo = ps1.tuSo * ps2.tuSo;
+	tich.mauSo = ps1.mauSo * ps2.mauSo;
+	
+	tich = rutGonPhanSo(tich);
+	tich = quyUocPhanSo(tich);
+	
+	if(tich.mauSo == 1) {
+		printf("Phep nhan: %d/%d * %d/%d = %d", 
+		ps1.tuSo, ps1.mauSo, ps2.tuSo, ps2.mauSo, tich.tuSo );
+	} else {
+		printf("Phep nhan: %d/%d * %d/%d = %d/%d", 
+		ps1.tuSo, ps1.mauSo, ps2.tuSo, ps2.mauSo, tich.tuSo, tich.mauSo );
+	}
+	printf("\n");
+}
+
+void phepChiaPhanSo(struct phanSo ps1, struct phanSo ps2) {
+	struct phanSo thuong;
+	thuong.tuSo = ps1.tuSo * ps2.mauSo;
+	thuong.mauSo = ps1.mauSo * ps2.tuSo;
+	
+	thuong = rutGonPhanSo(thuong);
+	thuong = quyUocPhanSo(thuong);
+	
+	if(thuong.mauSo == 1) {
+		printf("Phep chia: %d/%d / %d/%d = %d", 
+		ps1.tuSo, ps1.mauSo, ps2.tuSo, ps2.mauSo, thuong.tuSo );
+	} else {
+		printf("Phep chia: %d/%d / %d/%d = %d/%d", 
+		ps1.tuSo, ps1.mauSo, ps2.tuSo, ps2.mauSo, thuong.tuSo, thuong.mauSo );
+	}
+	
+	printf("\n");
+}
+
+int timMauSoChung(struct phanSo ps1, struct phanSo ps2) {
+	int UCLN, mauSoChung;
+	UCLN = uocChungLonNhat(ps1.mauSo, ps2.mauSo);
+	mauSoChung = boiChungNhoNhat(ps1.mauSo, ps2.mauSo, UCLN);
+	
+	return mauSoChung;
+}
+
+void phepCongPhanSo(struct phanSo ps1, struct phanSo ps2) {
+	struct phanSo tong;
+	int mauSoChung;
+	
+	mauSoChung = timMauSoChung(ps1,ps2); //tim mau so chung
+	
+	tong.tuSo =  (mauSoChung/ps1.mauSo)*ps1.tuSo + (mauSoChung/ps2.mauSo)*ps2.tuSo ; //Quy dong, cong tu so
+	tong.mauSo = mauSoChung;
+	
+	tong = rutGonPhanSo(tong);
+	tong = quyUocPhanSo(tong);
+	
+	if(tong.mauSo == 1) {
+		printf("Phep cong: %d/%d + %d/%d = %d", 
+		ps1.tuSo, ps1.mauSo, ps2.tuSo, ps2.mauSo, tong.tuSo );
+	} else {
+		printf("Phep cong: %d/%d + %d/%d = %d/%d", 
+		ps1.tuSo, ps1.mauSo, ps2.tuSo, ps2.mauSo, tong.tuSo, tong.mauSo );
+	}
+	
+	printf("\n");
+}
+
+void phepTruPhanSo(struct phanSo ps1, struct phanSo ps2) {
+	struct phanSo hieu;
+	int mauSoChung;
+	
+	mauSoChung = timMauSoChung(ps1,ps2); //tim mau so chung
+	
+	hieu.tuSo =  (mauSoChung/ps1.mauSo)*ps1.tuSo - (mauSoChung/ps2.mauSo)*ps2.tuSo ; //Quy dong, tru tu so
+	hieu.mauSo = mauSoChung;
+	
+	hieu = rutGonPhanSo(hieu);
+	hieu = quyUocPhanSo(hieu);
+	
+	if(hieu.mauSo == 1) {
+		printf("Phep tru: %d/%d - %d/%d = %d", 
+		ps1.tuSo, ps1.mauSo, ps2.tuSo, ps2.mauSo, hieu.tuSo );
+	} else {
+		printf("Phep tru: %d/%d - %d/%d = %d/%d", 
+		ps1.tuSo, ps1.mauSo, ps2.tuSo, ps2.mauSo, hieu.tuSo, hieu.mauSo );
+	}
+	
+	printf("\n");
+}
+
 void bai10() {
 	system("cls");
 	textColor(RED);
 	printf("Bai 10: Tinh toan phan so\n\n");
 	textColor(WHITE);
 	
+	struct phanSo phanSo1, phanSo2;
+
+	//Nhap phan so
+	printf("Nhap phan so thu 1");
+	printf("\n");
+	phanSo1 = nhapPhanSo();
+	
+	printf("\n");
+	printf("Nhap phan so thu 2");
+	printf("\n");
+	phanSo2 = nhapPhanSo();
+	
+	//Rut gon phan so
+	phanSo1 = rutGonPhanSo(phanSo1);
+	phanSo2 = rutGonPhanSo(phanSo2);
+	
+	//In phan so
+	textColor(11);
+	if(phanSo1.mauSo == 1) {
+		printf("\nPhan so thu 1: %d", phanSo1.tuSo);
+	} else {
+		printf("\nPhan so thu 1: %d/%d", phanSo1.tuSo, phanSo1.mauSo);
+	}
+	
+	if(phanSo2.mauSo == 1) {
+		printf("\nPhan so thu 2: %d", phanSo2.tuSo);
+	} else {
+		printf("\nPhan so thu 2: %d/%d", phanSo2.tuSo, phanSo2.mauSo);
+	}
+	
+	textColor(YELLOW);
+	printf("\n\n");
+	
+	//Tich 
+	phepCongPhanSo(phanSo1, phanSo2);
+	phepTruPhanSo(phanSo1, phanSo2);
+	phepNhanPhanSo(phanSo1, phanSo2);
+	phepChiaPhanSo(phanSo1, phanSo2);
+
+	printf("\n");
 	thoatChuongTrinh();	
 }
 
