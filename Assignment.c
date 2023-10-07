@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <locale.h>
 #include <math.h>
+#include <time.h>
 
 //Dat ten cho ma mau
 #define WHITE 7
@@ -570,16 +571,59 @@ void bai8(struct sinhVien dssv[], int *soLuongSinhVien) {
 //	printf("\n");
 	inDSSV(dssv, *soLuongSinhVien);
 
-	
 	printf("\n");
 	thoatChuongTrinh();	
+}
+
+int taoSoNgauNhien(int min, int max) {
+	return min + rand()%(max - min +1);
 }
 
 void bai9() {
 	system("cls");
 	textColor(RED);
 	printf("Bai 9: Game FPOLY-LOTT\n\n");
+	textColor(WHITE);
 	
+	int kiemTraKiTu,so1,so2;
+	char kiTu;
+	
+	printf("Nhap 2 so ngau nhien tu 01 -> 15");
+	
+	printf("\n\n");
+	do {
+		printf("Nhap so thu nhat: ");
+		kiemTraKiTu = scanf("%d%c", &so1, &kiTu);
+		fflush(stdin);
+	} while( kiemTraKiTu !=2 || kiTu !='\n' || so1 <1 || so1 > 15);
+	
+	do {
+		printf("Nhap so thu hai: ");
+		kiemTraKiTu = scanf("%d%c", &so2, &kiTu);
+		fflush(stdin);
+	} while( kiemTraKiTu !=2 || kiTu !='\n' || so2 <1 || so2 > 15);
+	
+	textColor(YELLOW);
+	printf("\nHai so ban chon la: %d va %d", so1,so2);
+	
+	int soNgauNhien1, soNgauNhien2;
+	srand(time(0));
+//	soNgauNhien1 = 9;
+//	soNgauNhien2 = 2;
+	soNgauNhien1 = taoSoNgauNhien(1,15);
+	soNgauNhien2 = taoSoNgauNhien(1,15);
+	
+	printf("\nHai so may man la: %d va %d", soNgauNhien1, soNgauNhien2);
+	printf("\n\n");
+	if( (so1==soNgauNhien1 && so2==soNgauNhien2) || (so1==soNgauNhien2 && so2==soNgauNhien1)) {
+		printf("Chuc mung ban da trung giai nhat !");
+	} else if(so1==soNgauNhien1 || so1==soNgauNhien2 || so2==soNgauNhien1 || so2==soNgauNhien2) {
+		printf("Chuc mung ban da trung giai nhi !");
+	} else {
+		printf("Chuc ban may man lan sau !");
+	}
+	
+	printf("\n\n");
 	thoatChuongTrinh();	
 }
 
@@ -587,6 +631,7 @@ void bai10() {
 	system("cls");
 	textColor(RED);
 	printf("Bai 10: Tinh toan phan so\n\n");
+	textColor(WHITE);
 	
 	thoatChuongTrinh();	
 }
@@ -690,7 +735,6 @@ int main() {
 			case 8: {
 				bai8(danhSachSinhVien, &soLuongSinhVien);
 				printf("\nsoLuongSinhVien: %d", soLuongSinhVien);
-//				getch();
 				break;
 			}
 			case 9: {
