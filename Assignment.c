@@ -29,6 +29,55 @@ void thoatChuongTrinh(){
 	} while(chon!=27);
 }	
 
+void motDauPhay(char s[], int chieuDai) {
+	for(int i=chieuDai-1; i>=chieuDai-6; i--)  {
+		s[i+1] = s[i];
+	}
+	s[chieuDai-6] = ',';
+	s[chieuDai+1] = '\0';
+	
+}
+
+void haiDauPhay(char s[], int chieuDai) {
+	for(int i=chieuDai; i>=chieuDai-9; i--)  {
+		s[i+1] = s[i];
+	}
+	s[chieuDai-9] = ',';
+	s[chieuDai+2] = '\0';
+}
+
+void baDauPhay(char s[], int chieuDai) {
+	
+	for(int i=chieuDai+1; i>=chieuDai-12; i--)  {
+		s[i+1] = s[i];
+	}
+	
+	s[chieuDai-12] = ',';
+	s[chieuDai+3] ='\0';
+}
+
+void themDauPhay(double so, char s[]) {
+
+	sprintf(s,"%.02f", so);
+	
+	int chieuDai ;                     
+	chieuDai = strlen(s); 
+	
+	if(chieuDai <=6) {
+		
+	}else if(chieuDai >=7 && chieuDai <= 9) {
+		motDauPhay(s,chieuDai);
+	} else if (chieuDai <=12) {
+		motDauPhay(s, chieuDai);
+		haiDauPhay(s, chieuDai);
+	} else {
+		motDauPhay(s, chieuDai);
+		haiDauPhay(s, chieuDai);
+		baDauPhay(s, chieuDai);
+	}
+
+}
+
 void soNguyenTo(int x) {
 	int dem=0;
 	if(x <= 1 ) {
@@ -65,39 +114,7 @@ void soChinhPhuong(int x) {
 	}
 }
 
-void themDauPhay(int n) {
 
-    if (n < 1000) {
-        printf ("%d", n);
-        return;
-    }
-    themDauPhay(n/1000);
-    printf (",%03d", n%1000);
-}
-
-void inSo(float so) {
-	int viTriCatSauDauPhay;
-	char soGoc[20], truocDauPhay[20], sauDauPhay[4];
-
-	sprintf(soGoc, "%.02f", so); // chuyen int sang char
-	printf("\nchieu dai: %d\n", strlen(soGoc));
-	
-	//sao chep chuoi goc 
-	for(int i=0; i<strlen(soGoc); i++) {
-		truocDauPhay[i] = soGoc[i];
-	}
-
-	//tach chuoi sau dau phay
-	viTriCatSauDauPhay = strlen(soGoc) - 3;
-	strncpy(sauDauPhay, soGoc + viTriCatSauDauPhay, 3);
-
-	//tach chuoi truoc dau phay
-	strtok(truocDauPhay,".");
-	
-	themDauPhay(atoi(truocDauPhay)); //goi ham them dau phay cho so int, so truoc dau phay
-
-	printf("%s VND\n\n", sauDauPhay); //them so sau dau phay
-}
 
 void bai1() {
 	char kiTu;
@@ -186,9 +203,12 @@ void bai2() {
 	thoatChuongTrinh();
 }
 
+const float tienBaGioDau = 150000;
+const float tienGioThuTu = 105000;
+
 void bai3() {
 	
-	float gioBatDau, gioKetThuc, kiemTraKiTu, tienBaGioDau = 150000, tienGioThuTu = 105000;
+	float gioBatDau, gioKetThuc, kiemTraKiTu;
 	float tongGio = 0, tongTien=0, baGioDau = 3;
 	char kiTu;
 	system("cls");
@@ -231,11 +251,11 @@ void bai3() {
 		tongTien = tongTien*0.9;
 	}
 	
-	printf("Tong tien thanh toan: ");
-//	printf("Tong tien thanh toan: %.2f", tongTien);
+	char tongTien_str[100];
+	themDauPhay(tongTien, tongTien_str);
+	printf("Tong tien thanh toan: %s VND", tongTien_str);
 
-	inSo(tongTien);
-
+	printf("\n\n");
 	thoatChuongTrinh();
 }
 
@@ -276,13 +296,15 @@ void bai4() {
 		tienMotSo = 2927;
 	}
 	
+	char tienDien_str[50];
 	tienDien = soDien * tienMotSo;
+	themDauPhay(tienDien, tienDien_str);
 	
 	textColor(YELLOW);
 	printf("\nBan dang dung dien o bac: %d\n",bac);
-	printf("Tien dien can phai dong la: ", tienDien);
-	inSo(tienDien);
-	
+	printf("Tien dien can phai dong la: %s VND", tienDien_str);
+
+	printf("\n\n");
 	thoatChuongTrinh();
 }
 
@@ -361,11 +383,16 @@ void bai6() {
 	}while( kiemTraKiTu !=2 || kiTu !='\n' || tienVay <= 0);
 	
 	textColor(YELLOW);
-	printf("\nSo tien muon vay: %.02lf VND", tienVay);
+	
+	char tienVay_str[50];
+	themDauPhay(tienVay, tienVay_str);
+	
+	printf("\nSo tien muon vay: %s VND", tienVay_str);
 	printf("\nLai thang: %d %%/thang\n", laiMotThang);
 	printf("Ky han: %d thang\n", kyHanThang);
 	
-	gocPhaiTra = tienVay/kyHanThang;
+	gocPhaiTra =  tienVay/kyHanThang;
+
 	tienConLai = tienVay;
 	
 	printf("\n");
@@ -382,13 +409,29 @@ void bai6() {
 		"So tien con lai");
 		
 	printf("\n");
+	char tienLaiHangThang_str[100], gocPhaiTra_str[100], gocVaLai_str[100], tienConLai_str[100] ;
+	themDauPhay(gocPhaiTra, gocPhaiTra_str);
+
 	for(int i=1; i<= kyHanThang; i++) {
+		//Tinh toan tien 
 		tienLaiHangThang = tienConLai*laiMotThang*0.01;
 		tongTienLai += tienLaiHangThang;
 		gocVaLai = gocPhaiTra + tienLaiHangThang;
 		tienConLai -= gocPhaiTra;
-		printf("%-10d %-20.02lf %-20.02lf %-20.02lf %-20.02lf",
-		i, tienLaiHangThang, gocPhaiTra, gocVaLai, fabs(tienConLai));
+		
+		if(tienConLai < 0 ) { //chuyen am thanh duong
+			tienConLai = -tienConLai;
+		}
+		
+		//them dau phay vao pho
+		themDauPhay(tienLaiHangThang, tienLaiHangThang_str);
+		themDauPhay(gocVaLai, gocVaLai_str);
+		themDauPhay(tienConLai, tienConLai_str);
+		
+		//In bang 
+		printf("%-10d %-20s %-20s %-20s %-20s",
+		i, tienLaiHangThang_str, gocPhaiTra_str, gocVaLai_str, tienConLai_str);
+
 		printf("\n");
 	}
 	
@@ -397,8 +440,13 @@ void bai6() {
 	}
 	
 	textColor(YELLOW);
-	printf("\n\nTong tien lai phai tra: %.02lf VND", tongTienLai);
-	printf("\nTong tien goc va lai phai tra: %.02lf VND", tongTienLai + tienVay);
+	
+	char tongTienLai_str[50], tongLaiGoc[50];
+	themDauPhay(tongTienLai, tongTienLai_str);
+	themDauPhay(tongTienLai + tienVay, tongLaiGoc);
+	
+	printf("\n\nTong tien lai phai tra: %s VND", tongTienLai_str);
+	printf("\nTong tien goc va lai phai tra: %s VND", tongLaiGoc);
 
 	printf("\n\n");
 	thoatChuongTrinh();	
@@ -406,7 +454,7 @@ void bai6() {
 
 const double tienVayMuaOto = 500000000;
 const int thoiHanVay = 24;
-const double laiSuatNam = 7.2;
+const float laiSuatNam = 7.2;
 
 void bai7() {
 	system("cls");
@@ -429,11 +477,16 @@ void bai7() {
 	tienTraGop = tienVayMuaOto*phanTramVay*0.01;
 	gocPhaiTra =  tienTraGop/thoiHanVay;
 	
+	char tienVayMuaOto_str[50], tienTraLanDau_str[50], tienTraGop_str[50];
+	themDauPhay(tienVayMuaOto, tienVayMuaOto_str);
+	themDauPhay(tienTraLanDau, tienTraLanDau_str);
+	themDauPhay(tienTraGop, tienTraGop_str);
+	
 	textColor(YELLOW);
-	printf("\nTong tien vay: %.02lf VND", tienVayMuaOto);
-	printf("\nPhan tram vay: %.02lf %%", phanTramVay);
-	printf("\nTien phai tra lan dau: %.02lf VND", tienTraLanDau);
-	printf("\nTien tra gop: %.2lf VND", tienTraGop);
+	printf("\nTong tien vay: %s VND", tienVayMuaOto_str);
+	printf("\nPhan tram vay: %.02f %%", phanTramVay);
+	printf("\nTien phai tra lan dau: %s VND", tienTraLanDau_str);
+	printf("\nTien tra gop: %s VND", tienTraGop_str);
 	printf("\nLai suat: %.2f %%/nam", laiSuatNam);
 	printf("\nKi han: %d nam", thoiHanVay);
 	
@@ -451,13 +504,27 @@ void bai7() {
 		"So tien con lai");
 	
 	printf("\n");
+	char tienLaiHangThang_str[50], gocPhaiTra_str[50], gocVaLai_str[50];
+	themDauPhay(gocPhaiTra, gocPhaiTra_str);
+	
 	for(int i=1; i<= thoiHanVay; i++) {
 		tienLaiHangThang = tienTraGop*laiSuatNam*0.01;
 		tienLaiTong += tienLaiHangThang;
 		gocVaLai = gocPhaiTra + tienLaiHangThang;
 		tienTraGop -= gocPhaiTra;
-		printf("%-10d %-20.02lf %-20.02lf %-20.02lf %-20.02lf",
-		i, tienLaiHangThang, gocPhaiTra, gocVaLai, fabs(tienTraGop));
+		
+		if(tienTraGop < 0) {
+			tienTraGop = -tienTraGop;	
+		}
+		
+//		them dau phay vao so
+		themDauPhay(tienLaiHangThang, tienLaiHangThang_str);
+		themDauPhay(gocVaLai, gocVaLai_str);
+		themDauPhay(tienTraGop, tienTraGop_str);
+		
+		printf("%-10d %-20s %-20s %-20s %-20s",
+		i, tienLaiHangThang_str, gocPhaiTra_str, gocVaLai_str, tienTraGop_str);
+		
 		printf("\n");
 	}
 	
@@ -466,8 +533,14 @@ void bai7() {
 	}
 	
 	textColor(YELLOW);
-	printf("\n\nTong tien lai phai tra la: %.02lf VND", tienLaiTong);
-	printf("\nTong tien goc va lai phai tra la: %.02lf VND", tienLaiTong + tienVayMuaOto*phanTramVay*0.01 );
+	double tongTienLaiVaVay = tienLaiTong + tienVayMuaOto*phanTramVay*0.01;
+	char tienLaiTong_str[50], tongTienLaiVaVay_str[50];
+	
+	themDauPhay(tienLaiTong, tienLaiTong_str);
+	themDauPhay(tongTienLaiVaVay, tongTienLaiVaVay_str);
+	
+	printf("\n\nTong tien lai phai tra la: %s VND", tienLaiTong_str);
+	printf("\nTong tien goc va lai phai tra la: %s VND", tongTienLaiVaVay_str );
 		
 	printf("\n\n");
 	thoatChuongTrinh();	
@@ -495,10 +568,8 @@ int dsSinhVien(struct sinhVien dssv[], int *soLuong) {
 int themSinhVien(struct sinhVien dssv[], int *soLuongCu) {
 	
 	int kiemTraKiTu, soLuongMuonThem;
-//	int soLuongCu;
 	char kiTu;
 	
-//	soLuongCu = *soLuong;
 	do {
 		printf("Nhap so luong sinh vien muon them: ");
 		kiemTraKiTu = scanf("%d%c", &soLuongMuonThem, &kiTu);
