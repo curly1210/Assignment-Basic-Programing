@@ -126,14 +126,14 @@ void soChinhPhuong(int x) {
 
 
 void bai1() {
+	system("cls");
+	textColor(RED);
+	printf("Bai 1: Kiem tra so nguyen\n\n");
+	textColor(WHITE);
+	
 	char kiTu;
 	int kiemTraKiTu;
 	float x;
-	
-	
-	system("cls");
-	textColor(WHITE);
-	printf("Bai 1: Kiem tra so nguyen\n\n");
 	
 	do {
 		printf("Nhap so x: ");
@@ -405,6 +405,12 @@ void bai5() {
 const int kyHanThang = 12; //Ki han vay 12 thang
 const int laiMotThang = 5; //Lai 1 thang 5%/thang
 
+void keBang() {
+	for(int i=0; i<97; i++) {
+		printf("-");
+	}	
+}
+
 void bai6() {
 	system("cls");
 	textColor(RED);
@@ -437,20 +443,24 @@ void bai6() {
 	//Tien con lai sau khi tra tung thang
 	tienConLai = tienVay; 
 	
+	//In bang
 	printf("\n");
 	textColor(WHITE);
-	for(int i=0; i<90; i++) {
-		printf("-");
-	}	
+	keBang();
 	
 	printf("\n");
-	printf("%-10s %-20s %-20s %-20s %-20s",
+	textColor(3);
+	
+	printf("|%-7s| %-20s| %-20s| %-20s| %-20s|",
 		"Ky han",
 		"Lai phai tra",
 		"Goc phai tra",
 		"So tien phai tra", 
 		"So tien con lai");
-		
+	
+	textColor(WHITE);
+	printf("\n");
+	keBang();
 	printf("\n");
 	
 	char tienLaiHangThang_str[100], gocPhaiTra_str[100], gocVaLai_str[100], tienConLai_str[100] ;
@@ -473,18 +483,16 @@ void bai6() {
 		themDauPhay(tienConLai, tienConLai_str);
 		
 		//In bang 
-		printf("%-10d %-20s %-20s %-20s %-20s",
+		printf("|  %-5d| %-20s| %-20s| %-20s| %-20s|",
 		i, tienLaiHangThang_str, gocPhaiTra_str, gocVaLai_str, tienConLai_str);
-
+		
+		//Ke chieu ngang
+		printf("\n");
+		keBang();
 		printf("\n");
 	}
 	
-	for(int i=0; i<90; i++) {
-		printf("-");
-	}
-	
 	textColor(YELLOW);
-	
 	//Tong tien lai, tong tien lai va goc
 	char tongTienLai_str[50], tongLaiGoc[50];
 	themDauPhay(tongTienLai, tongTienLai_str);
@@ -543,13 +551,14 @@ void bai7() {
 	printf("\nKi han: %d nam", thoiHanVay);
 	
 	//In bang sao ke
-	textColor(WHITE);
 	printf("\n\n");
-	for(int i=0; i<90; i++) {
-		printf("-");
-	}
+	textColor(WHITE);
+	keBang();
+	
 	printf("\n");
-	printf("%-10s %-20s %-20s %-20s %-20s",
+	textColor(3);
+	
+	printf("|%-7s| %-20s| %-20s| %-20s| %-20s|",
 		"Ky han",
 		"Lai phai tra",
 		"Goc phai tra",
@@ -557,6 +566,10 @@ void bai7() {
 		"So tien con lai");
 	
 	printf("\n");
+	textColor(WHITE);
+	keBang();
+	printf("\n");
+	
 	char tienLaiHangThang_str[50], gocPhaiTra_str[50], gocVaLai_str[50];
 	themDauPhay(gocPhaiTra, gocPhaiTra_str);
 	
@@ -576,14 +589,13 @@ void bai7() {
 		themDauPhay(gocVaLai, gocVaLai_str);
 		themDauPhay(tienTraGop, tienTraGop_str);
 		
-		printf("%-10d %-20s %-20s %-20s %-20s",
+		printf("|  %-5d| %-20s| %-20s| %-20s| %-20s|",
 		i, tienLaiHangThang_str, gocPhaiTra_str, gocVaLai_str, tienTraGop_str);
 		
+		//Ke chieu ngang
 		printf("\n");
-	}
-	
-	for(int i=0; i<90; i++) {
-		printf("-");
+		keBang();
+		printf("\n");
 	}
 	
 	//Tong tien lai phai tra, tong tien lai va goc phai tra
